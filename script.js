@@ -1,5 +1,8 @@
 let todayDate;
-let planner;
+let planner = {
+    day: "",
+    tasks: []
+};
 
 // Initializes the calander day
 function init(){
@@ -10,10 +13,18 @@ function init(){
 
 function readToday() {
     // TODO
-    planner = {
-        day: "20210923",
-        tasks: ["","Abc","","Def","","","Wer","","Zzz"]
+    planner.day = todayDate.format("YYYYMMDD");
+    planner.tasks = JSON.parse(localStorage.getItem("planner"+planner.day) || "[]");
+    console.log(planner.tasks);
+}
+
+function saveToday() {
+    console.log("saveToday");
+    for(let i = 9;i<18;i++){
+        planner.tasks[i-9] = document.getElementById("newId"+i).value;
+        console.log(document.getElementById('newId'+i).value);
     }
+    localStorage.setItem("planner"+planner.day, JSON.stringify(planner.tasks));
 }
 
 function populateToday() {
@@ -69,6 +80,7 @@ function addTImeblocks(){
         newButton.addClass("btn btn-outline-secondary calanderButton");
         newButton.attr("type","button");
         newButton.text("Check");
+        newButton.on("click", function(){saveToday();});
         newBlock.append(newButton);
 
         container.append(newBlock);
