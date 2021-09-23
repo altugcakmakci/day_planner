@@ -1,14 +1,27 @@
 let todayDate;
+let planner;
 
 // Initializes the calander day
 function init(){
     todayDate = moment();
+    readToday()
     populateToday();
+}
+
+function readToday() {
+    // TODO
+    planner = {
+        day: "20210923",
+        tasks: ["","Abc","","Def","","","Wer","","Zzz"]
+    }
 }
 
 function populateToday() {
     $("#currentDay").text(todayDate.format("MMMM Do, YYYY"));
     addTImeblocks();
+    for(let i = 9;i<18;i++){
+        document.getElementById("newId"+i).value = planner.tasks[i-9];
+    }
 }
 
 // Jump to previous day
@@ -25,7 +38,7 @@ $('#nextDay').on('click', function () {
 
 // Add timeblocks
 function addTImeblocks(){
-    let currentHour = 11; //moment().format("H");
+    let currentHour = moment().format("H");
     console.log(currentHour);
     let container = $(".container");
     for(let i = 9;i<18;i++){
@@ -50,6 +63,7 @@ function addTImeblocks(){
         } else {
             newInput.addClass("form-control pastHour");
         }
+        newInput.attr("id","newId"+i);
         newBlock.append(newInput);
         let newButton = $('<button>');
         newButton.addClass("btn btn-outline-secondary calanderButton");
