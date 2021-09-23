@@ -70,6 +70,28 @@ textarea {
   transition: all 0.3s ease-in-out;
 }
 
+.calanderLine:hover {
+  background-color: lightgreen;
+}
+
 .hourName {
   width: 100px;
+  background-color: white;
+}
+
+.pastHour {
+  background-color: lightgrey;
+  border-color: white;
+}
+
+.currentHour {
+  background-color: rgb(235, 121, 121);
+}
+
+.futureHour {
+  background-color: rgb(157, 243, 157);
+}
+
+.calanderButton {
+  background-color: rgb(166, 166, 247);
 }
