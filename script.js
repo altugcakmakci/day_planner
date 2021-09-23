@@ -7,27 +7,31 @@ let planner = {
 // Initializes the calander day
 function init(){
     todayDate = moment();
-    readToday()
     populateToday();
 }
 
+// Reads the current days data from local storage 
+// If no data is stored the tasks are reset to null
 function readToday() {
-    // TODO
     planner.day = todayDate.format("YYYYMMDD");
-    planner.tasks = JSON.parse(localStorage.getItem("planner"+planner.day) || "[]");
-    console.log(planner.tasks);
+    if (null!=localStorage.getItem("planner"+planner.day)){
+        planner.tasks = JSON.parse(localStorage.getItem("planner"+planner.day) || "[]");
+    } else {
+        planner.tasks=["","","","","","","","",""];
+    }
 }
 
+// Saves the curretn days data to the local storage
 function saveToday() {
-    console.log("saveToday");
     for(let i = 9;i<18;i++){
         planner.tasks[i-9] = document.getElementById("newId"+i).value;
-        console.log(document.getElementById('newId'+i).value);
     }
     localStorage.setItem("planner"+planner.day, JSON.stringify(planner.tasks));
 }
 
+// Populates the current days data and displays on the list
 function populateToday() {
+    readToday();
     $(".container").empty();
     $("#currentDay").text(todayDate.format("MMMM Do, YYYY"));
     addTImeblocks();
@@ -51,11 +55,11 @@ $('#nextDay').on('click', function () {
 // Add timeblocks
 function addTImeblocks(){
     let currentHour = moment().format("H");
-    console.log(currentHour);
+    let currentDate = moment().format("YYYYMMDD");
+
     let container = $(".container");
     for(let i = 9;i<18;i++){
         let thisHour = moment(i,"H");
-        console.log(thisHour);
         let newBlock = $('<div>');
         newBlock.addClass("input-group mb-0 calanderLine");
 
@@ -68,19 +72,19 @@ function addTImeblocks(){
         newBlock.append(newLine);
         let newInput = $('<input>');
         newInput.attr("type","text");
-        if (currentHour<i){
-            newInput.addClass("form-control futureHour");
-        } else if (currentHour===i){
-            newInput.addClass("form-control currentHour");
+        if ((currentDate<todayDate.format("YYYYMMDD")) || ((currentDate===todayDate.format("YYYYMMDD")) && currentHour<i)){
+            newInput.addClass("form-control future");
+        } else if ((currentDate===todayDate.format("YYYYMMDD")) && currentHour==i){
+            newInput.addClass("form-control present");
         } else {
-            newInput.addClass("form-control pastHour");
+            newInput.addClass("form-control past");
         }
         newInput.attr("id","newId"+i);
         newBlock.append(newInput);
         let newButton = $('<button>');
-        newButton.addClass("btn btn-outline-secondary calanderButton saveBtn");
+        newButton.addClass("btn btn-outline-secondary saveBtn");
         newButton.attr("type","button");
-        //newButton.text("Check");
+        newButton.text("√");
         newButton.on("click", function(){saveToday();});
         newBlock.append(newButton);
 
