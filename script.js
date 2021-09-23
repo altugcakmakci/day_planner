@@ -28,6 +28,7 @@ function saveToday() {
 }
 
 function populateToday() {
+    $(".container").empty();
     $("#currentDay").text(todayDate.format("MMMM Do, YYYY"));
     addTImeblocks();
     for(let i = 9;i<18;i++){
@@ -77,9 +78,9 @@ function addTImeblocks(){
         newInput.attr("id","newId"+i);
         newBlock.append(newInput);
         let newButton = $('<button>');
-        newButton.addClass("btn btn-outline-secondary calanderButton");
+        newButton.addClass("btn btn-outline-secondary calanderButton saveBtn");
         newButton.attr("type","button");
-        newButton.text("Check");
+        //newButton.text("Check");
         newButton.on("click", function(){saveToday();});
         newBlock.append(newButton);
 
